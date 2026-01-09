@@ -14,11 +14,7 @@ export const signup = async (req, res) => {
 
     // kiểm tra các trường dữ liệu
     if (!username || !password || !email || !firstName || !lastName) {
-      return res
-        .status(400)
-        .json({
-          message: "Không được thiếu username, password, email, firstName, lastName."
-        });
+      return res.status(400).json({ message: "Không được thiếu username, password, email, firstName, lastName." });
     }
 
     // kiểm tra username có tồn tại trong db không
@@ -32,11 +28,7 @@ export const signup = async (req, res) => {
     });
 
     if (duplicate) {
-      return res
-        .status(409)
-        .json({
-          message: "Email hoặc Username đã tồn tại."
-        });
+      return res.status(409).json({ message: "Email hoặc Username đã tồn tại." });
     }
 
     // mã hóa password
@@ -56,10 +48,8 @@ export const signup = async (req, res) => {
     return res.sendStatus(200);
 
   } catch (error) {
-    console.error(`Lỗi khi gọi signup`, error);
-    return res
-      .status(500)
-      .json({ message: "Lỗi hệ thống" });
+    console.error(`Lỗi khi gọi signup()`, error);
+    return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
 
@@ -71,11 +61,7 @@ export const signin = async (req, res) => {
 
     // kiểm tra các trường dữ liệu
     if (!username || !password) {
-      return res
-        .status(400)
-        .json({
-          message: "Thiếu username hoặc password"
-        })
+      return res.status(400).json({ message: "Thiếu username hoặc password" })
     }
 
     // kiểm tra có user này không
@@ -86,22 +72,14 @@ export const signin = async (req, res) => {
     })
 
     if (!user) {
-      return res
-        .status(401)
-        .json({
-          message: "username hoặc password không chính xác"
-        })
+      return res.status(401).json({ message: "username hoặc password không chính xác" })
     }
 
     // lấy hashedPassword trong db để so sánh với password người dùng nhập
     const isPasswordCorrect = await bcrypt.compare(password, user.hashPassword);
 
     if (!isPasswordCorrect) {
-      return res
-        .status(401)
-        .json({
-          message: "username hoặc password không chính xác"
-        })
+      return res.status(401).json({ message: "username hoặc password không chính xác" })
     }
 
     // nếu khớp thì tạo accessToken + jwt
@@ -115,7 +93,7 @@ export const signin = async (req, res) => {
     // tạo refeshToken
     const refeshToken = randomBytes(64).toString("hex");
 
-    // tạo session mới để lưu refeshToken
+    // tạo session mới để lưu refeshToken trong db
     await prisma.session.create({
       data: {
         userId: user.id,
@@ -141,10 +119,8 @@ export const signin = async (req, res) => {
       });
 
   } catch (error) {
-    console.error(`Lỗi khi gọi signin`, error);
-    return res
-      .status(500)
-      .json({ message: "Lỗi hệ thống" });
+    console.error(`Lỗi khi gọi signin()`, error);
+    return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
 
@@ -170,9 +146,7 @@ export const signout = async (req, res) => {
     return res.sendStatus(204)
 
   } catch (error) {
-    console.error(`Lỗi khi gọi signout`, error);
-    return res
-      .status(500)
-      .json({ message: "Lỗi hệ thống" });
+    console.error(`Lỗi khi gọi signout()`, error);
+    return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 }
