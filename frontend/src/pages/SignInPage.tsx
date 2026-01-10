@@ -1,7 +1,26 @@
+import { z } from 'zod'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form';
+
+const signinSchema = z.object({
+  username: z.string().min(3, "Vui lòng nhập tên đăng nhập"),
+  password: z.string().min(1, "Vui lòng nhập mật khẩu")
+});
+
 function SignInPage() {
+  type SignInFormValues = z.infer<typeof signinSchema>;
+
+  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignInFormValues>({
+    resolver: zodResolver(signinSchema)
+  });
+
+  const onSubmit = async (data: SignInFormValues) => {
+    console.log("sign in");
+  };
+
   return (
     <>
-      <div className="md:flex items-center justify-center bg-linear-to-t from-maincolor h-dvh font-notosans">
+      <div className="md:flex items-center justify-center bg-linear-to-t from-maincolor h-dvh overflow-y-auto font-mono">
 
         {/* logo */}
         <div className="hidden absolute top-0 left-0 w-full md:flex items-center pt-12 pl-10">
@@ -12,7 +31,7 @@ function SignInPage() {
         </div>
 
         {/* wrapper form */}
-        <div className="bg-[#1b1c29] lg:min-w-196 max-sm:h-full md:rounded-xl">
+        <div className="z-10 bg-[#1b1c29] lg:min-w-196 max-sm:h-full md:rounded-xl">
 
           {/* wrapper content  */}
           <div className="flex max-sm:flex-col items-center justify-between p-8">
@@ -35,24 +54,42 @@ function SignInPage() {
               </div>
 
               {/* form */}
-              <form className="flex flex-col gap-3" action="" method="post">
+              <form
+                onSubmit={handleSubmit(onSubmit)}
+                className="flex flex-col gap-3"
+                method="post"
+              >
 
                 {/* username field */}
                 <div className="flex flex-col gap-1.5 md:min-w-100 text-white text-[14px]">
-                  <label htmlFor="username">Username:</label>
+                  <label htmlFor="username">Tên đăng nhập:</label>
                   <input
                     type="text"
                     className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-maincolor duration-500"
+                    id='username'
+                    {...register("username")}
                   />
+                  {errors && (
+                    <p className='text-red-500 text-[12px]'>
+                      {errors.username?.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* password file */}
                 <div className="flex flex-col gap-1.5 md:min-w-100 text-white text-[14px]">
-                  <label htmlFor="password">Password:</label>
+                  <label htmlFor="password">Mật khẩu:</label>
                   <input
                     type="text"
                     className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-maincolor duration-500"
+                    id='password'
+                    {...register("password")}
                   />
+                  {errors && (
+                    <p className='text-red-500 text-[12px]'>
+                      {errors.password?.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* forgot password field */}
@@ -63,6 +100,7 @@ function SignInPage() {
                 {/* button sign in */}
                 <button
                   className="w-full py-3 px-4 text-white text-[12px] bg-maincolor rounded-md cursor-pointer"
+                  disabled={isSubmitting}
                 >
                   Đăng nhập
                 </button>

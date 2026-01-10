@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from 'react-router'
 import SignUpPage from './pages/SignUpPage'
-import SignInPage from './pages/SigninPage'
+import SignInPage from './pages/SignInPage'
 import ChatAppPage from './pages/ChatAppPage'
 
 function App() {
