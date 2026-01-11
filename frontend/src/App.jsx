@@ -2,6 +2,7 @@ import { BrowserRouter, Route, Routes } from 'react-router'
 import SignUpPage from './pages/SignUpPage'
 import SignInPage from './pages/SignInPage'
 import ChatAppPage from './pages/ChatAppPage'
+import ProtectedRoute from './components/auth/ProtectedRoute'
 
 function App() {
   return (
@@ -9,24 +10,25 @@ function App() {
       <BrowserRouter>
         <Routes>
 
-          {/* public routes */}
-          
-          <Route 
+          {/* public routes: '/signin', '/signup' */}
+
+          <Route
             path='/signin'
             element={<SignInPage />}
           />
 
-          <Route 
+          <Route
             path='/signup'
             element={<SignUpPage />}
           />
 
-          {/* protected routes */}
-          {/* todo: tạo protected route */}
-          <Route 
-            path='/'
-            element={<ChatAppPage />}
-          />
+          {/* protected routes: '/' */}
+          <Route element={<ProtectedRoute />} >
+            <Route
+              path='/'
+              element={<ChatAppPage />}
+            />
+          </Route>
 
         </Routes>
       </BrowserRouter>
