@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router';
 
 function SignInForm() {
   const signinSchema = z.object({
-    username: z.string().min(3, "Vui lòng nhập tên đăng nhập"),
+    username: z.string().min(1, "Vui lòng nhập tên đăng nhập"),
     password: z.string().min(1, "Vui lòng nhập mật khẩu")
   });
 
