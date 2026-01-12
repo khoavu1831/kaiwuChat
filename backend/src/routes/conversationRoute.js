@@ -1,7 +1,7 @@
 import express from 'express'
-import { checkFriendship } from '../middlewares/checkFriendship.js'
-import {checkParticipant,} from '../middlewares/checkParticipant.js'
+import { checkFriendship, checkParticipant } from '../middlewares/friendMiddleware.js';
 import {
+  addMemberToGroup,
   createConversation,
   getConversations,
   getMessages,
@@ -13,7 +13,9 @@ const router = express.Router();
 router.post('/', checkFriendship, createConversation); // áp dụng cho private chat
 router.get('/', getConversations); // group chat
 
-router.get('/:conversationId/messages', checkParticipant, getMessages);
+router.get('/:conversationId/message', checkParticipant, getMessages);
 router.patch('/:conversationId/seen', checkParticipant, markAsSeen);
+
+router.post('/:conversationId/member', addMemberToGroup);
 
 export default router;

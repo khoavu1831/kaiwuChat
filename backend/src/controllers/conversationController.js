@@ -5,42 +5,48 @@ export const createConversation = async (req, res) => {
     const userId = req.user.id;
     const { type, toUserId, name } = req.body;
 
-    if (!type || (type === "private" && !toUserId)) {
-      return res.status(400).json({ message: "Thiếu dữ liệu" });
+    if (!type) {
+      return res.status(400).json({ message: "Thiếu type" });
     }
 
-    // tạo private conversation
+    // PRIVATE
     if (type === "private") {
-      let conversation = await prisma.conversation.findFirst({
+      if (!toUserId) {
+        return res.status(400).json({ message: "Thiếu toUserId" });
+      }
+
+      const existing = await prisma.conversation.findFirst({
         where: {
           type: "private",
           participants: {
-            every: {
-              userId: { in: [userId, toUserId] }
-            }
+            some: { userId },
+            some: { userId: toUserId }
+          }
+        },
+        include: { participants: true }
+      });
+
+      if (existing && existing.participants.length === 2) {
+        return res.status(200).json({ data: existing });
+      }
+
+      const conversation = await prisma.conversation.create({
+        data: {
+          type: "private",
+          participants: {
+            create: [{ userId }, { userId: toUserId }]
           }
         }
       });
 
-      if (!conversation) {
-        conversation = await prisma.conversation.create({
-          data: {
-            type: "private",
-            participants: {
-              create: [{ userId }, { userId: toUserId }]
-            }
-          }
-        });
-      }
-
-      return res.status(200).json({
-        message: "Đã tạo private conversation",
-        data: conversation
-      });
-
+      return res.status(201).json({ data: conversation });
     }
 
-    // tạo group conversation
+    // GROUP
+    if (!name) {
+      return res.status(400).json({ message: "Thiếu name" });
+    }
+
     const conversation = await prisma.conversation.create({
       data: {
         type: "group",
@@ -51,16 +57,13 @@ export const createConversation = async (req, res) => {
       }
     });
 
-    return res.status(201).json({
-      message: "Đã tạo group conversation",
-      data: conversation
-    })
+    return res.status(201).json({ data: conversation });
 
-  } catch (error) {
-    console.errer("Lỗi khi tạo cuộc trò chuyện", error);
+  } catch (err) {
+    console.error(err);
     return res.status(500).json({ message: "Lỗi hệ thống" });
   }
-}
+};
 
 export const getConversations = async (req, res) => {
   try {
@@ -133,13 +136,14 @@ export const getConversations = async (req, res) => {
 
 export const getMessages = async (req, res) => {
   try {
-    const { conversationId } = req.params;
+    const conversationId = req.conversationId;
+
     const messages = await prisma.message.findMany({
       where: { conversationId },
       orderBy: { createdAt: "asc" }
     });
 
-    return res.json.status(200).json({
+    return res.status(200).json({
       message: "Lấy tin nhắn thành công",
       data: messages
     });
@@ -152,9 +156,84 @@ export const getMessages = async (req, res) => {
 
 export const markAsSeen = async (req, res) => {
   try {
+    const userId = req.user.id;
+    const conversationId = req.conversationId;
+
+    await prisma.participant.update({
+      where: {
+        conversationId_userId: {
+          conversationId,
+          userId
+        }
+      },
+      data: {
+        lastSeenAt: new Date()
+      }
+    });
+
+    return res.status(200).json({ message: "Seen" });
 
   } catch (error) {
     console.error("Không thể mark as seen", error);
     res.status(500).json({ message: "Lỗi hệ thống" });
   }
 }
+
+export const addMemberToGroup = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const { conversationId } = req.params;
+    const { memberId } = req.body;
+
+    // kiểm tra đây có phải group chat không
+    const conversation = await prisma.conversation.findUnique({
+      where: { id: Number(conversationId) },
+      include: { participants: true }
+    });
+
+    if (!conversation || conversation.type !== "group") {
+      return res.status(400).json({ message: "Không phải group chat" });
+    }
+
+    // kiểm tra người dùng có tồn tại không
+    const member = await prisma.user.findUnique({
+      where: { id: memberId }
+    });
+
+    if (!member) {
+      return res.status(404).json({ message: "Người dùng không tồn tại" });
+    }
+
+    // kiểm tra có quyền admin không
+    const isAdmin = conversation.participants.some(
+      p => p.userId === userId && p.role === "admin"
+    );
+
+    if (!isAdmin) {
+      return res.status(403).json({ message: "Không có quyền thêm thành viên" });
+    }
+
+    // kiểm tra đã tồn tại user muốn add đã có trong group chưa
+    const exists = conversation.participants.some(
+      p => p.userId === memberId
+    );
+
+    if (exists) {
+      return res.status(409).json({ message: "User đã trong group" });
+    }
+
+    // thêm người dùng vào group
+    await prisma.participant.create({
+      data: {
+        conversationId: Number(conversationId),
+        userId: memberId
+      }
+    });
+
+    return res.status(201).json({ message: "Đã thêm thành viên" });
+
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ message: "Lỗi hệ thống" });
+  }
+};
