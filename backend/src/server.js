@@ -4,6 +4,8 @@ import cors from 'cors'
 import authRoute from './routes/authRoute.js'
 import userRoute from './routes/userRoute.js'
 import friendRoute from './routes/friendRoute.js'
+import messageRoute from './routes/messageRoute.js'
+import conversationRoute from './routes/conversationRoute.js'
 import cookieParser from 'cookie-parser'
 import { protectedRoute } from './middlewares/authMiddleware.js'
 
@@ -25,6 +27,9 @@ app.use('/api/auth', authRoute);
 app.use(protectedRoute); // middleware: authorization
 app.use('/api/user', userRoute);
 app.use('/api/friend', friendRoute);
+app.use('/api/message', messageRoute);
+app.use('/api/conversation', conversationRoute);
+
 
 
 app.get("/", (req, res) => {

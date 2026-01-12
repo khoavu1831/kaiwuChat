@@ -1,4 +1,5 @@
 import { prisma } from '../libs/prisma.js';
+import { getAcceptedFriendship } from '../utils/Helper/friendshipHelper.js';
 
 export const sendFriendRequest = async (req, res) => {
   try {
@@ -22,18 +23,7 @@ export const sendFriendRequest = async (req, res) => {
     }
 
     // 3. kiểm tra 2 user có là bạn không
-    let userA = from;
-    let userB = to;
-    if (userA > userB) [userA, userB] = [userB, userA];
-
-    const existed = await prisma.friendship.findUnique({
-      where: {
-        userId_friendId: {
-          userId: userA,
-          friendId: userB
-        }
-      }
-    });
+    await getAcceptedFriendship(from, to);
 
     if (existed) {
       return res.status(400).json({ message: "Lời mời đã tồn tại" });
@@ -158,7 +148,10 @@ export const getAllFriends = async (req, res) => {
       f.userId === userId ? f.friend : f.user;
     })
 
-    return res.status(201).json({ message: "Lấy danh sách bạn bè thành công", friends: result });
+    return res.status(201).json({
+      message: "Lấy danh sách bạn bè thành công",
+      friends: result
+    });
 
   } catch (error) {
     console.error("Lỗi <Lấy danh sách bạn bè>", error);
@@ -190,7 +183,10 @@ export const getFriendRequests = async (req, res) => {
 
     const result = requests.map(r => r.sender);
 
-    return res.status(200).json({ message: "Lấy danh sách các yêu cầu kết bạn thành công", requests: result });
+    return res.status(200).json({
+      message: "Lấy danh sách các yêu cầu kết bạn thành công",
+      requests: result
+    });
 
   } catch (error) {
     console.error("Lỗi <Lấy danh sách các lời mời kết bạn>", error);
