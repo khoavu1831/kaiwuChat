@@ -7,7 +7,7 @@ datasource db {
 }
 
 model User {
-  id           Int   @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
   username     String   @unique
   email        String   @unique
   hashPassword String
@@ -19,26 +19,30 @@ model User {
   messages     Message[]     @relation("UserMessages")
   participants Participant[]
 
-  friendships Friendship[] @relation("UserFriendships")
-  friendOf    Friendship[] @relation("FriendFriendships")
-  sessions    Session[]
+  friendships  Friendship[] @relation("UserFriendships")
+  friendOf     Friendship[] @relation("FriendFriendships")
+  sentRequests Friendship[] @relation("SenderFriendships")
+
+  sessions Session[]
 }
 
 model Friendship {
-  id        Int   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   userId    Int
   friendId  Int
+  senderId  Int
   status    String // pending - accepted - blocked
   createdAt DateTime @default(now())
 
   user   User @relation("UserFriendships", fields: [userId], references: [id])
   friend User @relation("FriendFriendships", fields: [friendId], references: [id])
+  sender User @relation("SenderFriendships", fields: [senderId], references: [id])
 
   @@unique([userId, friendId])
 }
 
 model Conversation {
-  id        Int   @id @default(autoincrement())
+  id        Int      @id @default(autoincrement())
   type      String // private - group
   name      String?
   createdAt DateTime @default(now())
@@ -49,7 +53,7 @@ model Conversation {
 }
 
 model Participant {
-  id             Int   @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   conversationId Int
   userId         Int
   role           String   @default("member") // member - admin
@@ -62,7 +66,7 @@ model Participant {
 }
 
 model Message {
-  id             Int   @id @default(autoincrement())
+  id             Int      @id @default(autoincrement())
   conversationId Int
   senderId       Int
   content        String

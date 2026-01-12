@@ -3,7 +3,7 @@ import { prisma } from '../libs/prisma.js'
 import jwt from 'jsonwebtoken'
 import { randomBytes } from 'node:crypto';
 
-const ACCESS_TOKEN_TTL = "10s";
+const ACCESS_TOKEN_TTL = "15m";
 const REFRESH_TOKEN_TTL = 10 * 24 * 60 * 60 * 1000; // 10 ngày
 
 export const signup = async (req, res) => {
