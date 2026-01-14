@@ -26,3 +26,14 @@ export interface AuthState {
   fetchMe: () => Promise<void>;
   refresh: () => Promise<void>;
 }
+
+type TabType = "private" | "group";
+
+export interface UIStore {
+  activeId: string | null;
+  setActive: (id: string) => void;
+
+  tab: TabType;
+  setTab: (tab: TabType) => void;
+
+}

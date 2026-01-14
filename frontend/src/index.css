@@ -1,7 +1,8 @@
 @import "tailwindcss";
 
 @theme {
-  --color-maincolor: #3b4ccc;
+  --color-brandcolor: #3b4ccc;
+  --color-basecolor: #1b1c29;
   --font-notosans: "Noto Sans", sans-serif;
   --font-poppins: "Poppins", san-serif;
 }

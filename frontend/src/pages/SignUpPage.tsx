@@ -3,7 +3,7 @@ import SignUpForm from "../components/auth/SignUpForm"
 function SignUpPage() {
   return (
     <>
-      <div className="md:flex items-center justify-center bg-linear-to-t from-maincolor min-h-dvh md:py-4 overflow-y-auto font-mono">
+      <div className="md:flex items-center justify-center bg-linear-to-t from-brandcolor min-h-dvh md:py-4 overflow-y-auto font-mono">
 
         {/* logo */}
         <div className="hidden absolute top-0 left-0 w-full md:flex items-center pt-12 pl-10">

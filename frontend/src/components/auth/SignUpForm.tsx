@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form';
 import { useAuthStore } from '../../stores/useAuthStore';
 import { useNavigate } from 'react-router';
+import Logo from '../logo/Logo';
 
 function SignUpForm() {
   const signupSchema = z
@@ -40,17 +41,14 @@ function SignUpForm() {
     navigate('/signin');
   };
   return (
-    <div className="z-10 bg-[#1b1c29] lg:min-w-100 md:rounded-xl">
+    <div className="z-10 bg-basecolor lg:min-w-100 md:rounded-xl">
 
       {/* wrapper content  */}
       <div className="flex max-sm:flex-col items-center justify-between p-8">
 
         {/* logo: max-sm */}
         <div className="md:hidden w-full flex justify-center items-center mb-4">
-          <div className="h-10 w-10 mr-1">
-            <img className="h-full w-full object-cover bg-maincolor rounded-full" src="logo.png" alt="logo" />
-          </div>
-          <span className="font-bold text-2xl text-white">kaiwuChat</span>
+          <Logo />
         </div>
 
         {/* form */}
@@ -75,7 +73,7 @@ function SignUpForm() {
                 <label htmlFor="firstName">Tên:</label>
                 <input
                   type="text"
-                  className="w-full h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-maincolor duration-500"
+                  className="w-full h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-brandcolor duration-500"
                   id='firstName'
                   {...register("firstName")}
                 />
@@ -93,7 +91,7 @@ function SignUpForm() {
                 <label htmlFor="lastName">Họ:</label>
                 <input
                   type="text"
-                  className="w-full h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-maincolor duration-500"
+                  className="w-full h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-brandcolor duration-500"
                   id='lastName'
                   {...register("lastName")}
                 />
@@ -112,7 +110,7 @@ function SignUpForm() {
               <label htmlFor="username">Tên đăng nhập:</label>
               <input
                 type="text"
-                className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-maincolor duration-500"
+                className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-brandcolor duration-500"
                 id='username'
                 {...register("username")}
               />
@@ -130,7 +128,7 @@ function SignUpForm() {
               <label htmlFor="email">Email:</label>
               <input
                 type="email"
-                className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-maincolor duration-500"
+                className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-brandcolor duration-500"
                 id='email'
                 {...register("email")}
               />
@@ -148,7 +146,7 @@ function SignUpForm() {
               <label htmlFor="password">Mật khẩu:</label>
               <input
                 type="password"
-                className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-maincolor duration-500"
+                className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-brandcolor duration-500"
                 id='password'
                 {...register("password")}
               />
@@ -166,7 +164,7 @@ function SignUpForm() {
               <label htmlFor="confirmPassword">Xác nhận mật khẩu:</label>
               <input
                 type="password"
-                className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-maincolor duration-500"
+                className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-brandcolor duration-500"
                 id='confirmPassword'
                 {...register("confirmPassword")}
               />
@@ -184,11 +182,11 @@ function SignUpForm() {
               <div className="flex gap-2">
                 <input
                   type="checkbox"
-                  className="cursor-pointer mt-0.5 appearance-none w-3 h-3 rounded-full bg-[#2c2e42] border border-[#666880] checked:bg-maincolor"
+                  className="cursor-pointer mt-0.5 appearance-none w-3 h-3 rounded-full bg-[#2c2e42] border border-[#666880] checked:bg-brandcolor"
                   id="acceptTerms"
                   {...register("acceptTerms")}
                 />
-                <label className="text-white text-[12px]">Đồng ý với <a className="text-maincolor" href=""> điều khoản</a> của chúng tôi</label>
+                <label className="text-white text-[12px]">Đồng ý với <a className="text-brandcolor" href=""> điều khoản</a> của chúng tôi</label>
               </div>
 
               {/* show error */}
@@ -202,7 +200,7 @@ function SignUpForm() {
             {/* button sign in */}
             <button
               disabled={isSubmitting}
-              className="w-full py-3 px-4 text-white text-[12px] bg-maincolor rounded-md cursor-pointer"
+              className="w-full py-3 px-4 text-white text-[12px] bg-brandcolor rounded-md cursor-pointer"
             >
               Xác nhận
             </button>
@@ -210,7 +208,7 @@ function SignUpForm() {
             {/* sign in field */}
             <div className="flex gap-1 text-[12px]">
               <p className="text-white">Đã có tài khoản?</p>
-              <a href="/signin" className="text-maincolor">Đăng nhập tại đây</a>
+              <a href="/signin" className="text-brandcolor">Đăng nhập tại đây</a>
             </div>
           </form>
         </div>

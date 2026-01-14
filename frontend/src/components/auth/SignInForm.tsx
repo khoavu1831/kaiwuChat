@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form';
 import { useAuthStore } from '../../stores/useAuthStore';
 import { useNavigate } from 'react-router';
+import Logo from '../logo/Logo';
 
 function SignInForm() {
   const signinSchema = z.object({
@@ -29,17 +30,14 @@ function SignInForm() {
   };
   
   return (
-    <div className="z-10 bg-[#1b1c29] lg:min-w-196 max-sm:h-full md:rounded-xl" >
+    <div className="z-10 bg-basecolor lg:min-w-196 max-sm:h-full md:rounded-xl" >
 
       {/* wrapper content  */}
       <div className="flex max-sm:flex-col items-center justify-between p-8" >
 
         {/* logo: max-sm */}
         <div className="md:hidden w-full flex justify-center items-center mb-4" >
-          <div className="h-10 w-10 mr-1">
-            <img className="h-full w-full object-cover bg-maincolor rounded-full" src="logo.png" alt="logo" />
-          </div>
-          <span className="font-bold text-2xl text-white">kaiwuChat</span>
+          <Logo />
         </div>
 
         {/* left section */}
@@ -64,7 +62,7 @@ function SignInForm() {
               <label htmlFor="username">Tên đăng nhập:</label>
               <input
                 type="text"
-                className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-maincolor duration-500"
+                className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-brandcolor duration-500"
                 id='username'
                 {...register("username")}
               />
@@ -82,7 +80,7 @@ function SignInForm() {
               <label htmlFor="password">Mật khẩu:</label>
               <input
                 type="text"
-                className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-maincolor duration-500"
+                className="md:min-w-98.5 h-10 py-3 px-2 bg-[#2c2e42] rounded-md border-2 border-[#666880] outline-none focus:border-brandcolor duration-500"
                 id='password'
                 {...register("password")}
               />
@@ -96,13 +94,13 @@ function SignInForm() {
             </div >
 
             {/* forgot password field */}
-            <a href="/signup" className="text-maincolor text-[12px] cursor-pointer" >
+            <a href="/signup" className="text-brandcolor text-[12px] cursor-pointer" >
               Quên mật khẩu? 
             </a>
 
             {/* button sign in */}
             < button
-              className="w-full py-3 px-4 text-white text-[12px] bg-maincolor rounded-md cursor-pointer"
+              className="w-full py-3 px-4 text-white text-[12px] bg-brandcolor rounded-md cursor-pointer"
               disabled={isSubmitting}
             >
               Đăng nhập
@@ -112,7 +110,7 @@ function SignInForm() {
             <div className="flex gap-1 text-[12px] my-2" >
               <p className="text-white">Chưa có tài khoản?
               </p>
-              <a href="/signup" className="text-maincolor">Đăng kí ngay</a>
+              <a href="/signup" className="text-brandcolor">Đăng kí ngay</a>
             </div >
           </form >
 
