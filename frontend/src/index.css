@@ -6,3 +6,10 @@
   --font-notosans: "Noto Sans", sans-serif;
   --font-poppins: "Poppins", san-serif;
 }
+
+/* firefox */
+.chat-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #3b4ccc transparent;
+  scroll-behavior: smooth;
+}

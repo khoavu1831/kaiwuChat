@@ -43,7 +43,7 @@ function Conversation({ id }: { id: string }) {
         {/* context */}
         <div className="context flex justify-between items-center text-[#666880]">
           {/* text message */}
-          <p className="line-clamp-2 text-[13px] pr-2">
+          <p className="line-clamp-1 text-[13px] pr-2">
             Hello! Long time no see! I have a nice job for you.
           </p>
 

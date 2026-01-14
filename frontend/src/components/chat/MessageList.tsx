@@ -2,7 +2,9 @@ import React from 'react'
 
 function MessageList() {
   return (
-    <div>MessageList</div>
+    <div className='h-full'>
+      
+    </div>
   )
 }
 

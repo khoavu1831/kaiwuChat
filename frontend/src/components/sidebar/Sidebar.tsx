@@ -11,7 +11,7 @@ function Sidebar() {
 
   return (
     <>
-      <div className="flex flex-col font-mono md:max-w-3/10 max-md:w-full">
+      <div className="flex flex-col h-dvh font-mono md:max-w-3/10 max-md:w-full">
 
         {/* logo */}
         <div className="w-full flex items-center pl-2 py-4">
@@ -24,7 +24,7 @@ function Sidebar() {
             <i className="fa-solid fa-magnifying-glass text-[#666880] group-focus-within:text-white transition-colors duration-400 py-0 px-3"></i>
             <input
               className="
-                placeholder:text-[#666880] placeholder:text-[12px]
+                placeholder:text-[# ] placeholder:text-[12px]
                 focus:outline-none text-white text-sm
                 py-3 px-3 w-full caret-white
               "
@@ -71,16 +71,16 @@ function Sidebar() {
 
         {/* conversation list */}
         {tab === "private" && (
-          <div className="conversation-container bg-brandcolor/10 rounded-t-2xl">
-            <div className="flex flex-col overflow-y-auto p-2">
+          <div className="conversation-container bg-brandcolor/10 rounded-t-2xl overflow-y-auto chat-scroll">
+            <div className="flex flex-col p-2">
               {converList}
             </div>
           </div>
         )}
 
         {tab === "group" && (
-          <div className="conversation-container bg-brandcolor/10 rounded-t-2xl">
-            <div className="flex flex-col overflow-y-auto p-2">
+          <div className="conversation-container bg-brandcolor/10 rounded-t-2xl overflow-y-auto chat-scroll">
+            <div className="flex flex-col p-2">
               {converList}
             </div>
           </div>
