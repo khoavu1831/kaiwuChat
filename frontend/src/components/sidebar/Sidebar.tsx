@@ -41,7 +41,7 @@ function Sidebar() {
               onClick={() => setTab("private")}
               className={`
               ${tab === "private" ? "bg-brandcolor/40" : ""}
-              private-chat flex items-center rounded-t-xl py-1 px-2 
+              private-chat flex items-center rounded-t-xl py-3 px-4 
               transition-all duration-600 ease-in-out cursor-pointer
             `}>
               <i className="fa-solid fa-user"></i>
@@ -52,7 +52,7 @@ function Sidebar() {
               onClick={() => setTab("group")}
               className={`
               ${tab === "group" ? "bg-brandcolor/40" : ""}
-              private-chat flex items-center justify-between rounded-t-xl py-1 px-2 
+              group-chat flex items-center rounded-t-xl py-3 px-4 
               transition-all duration-600 ease-in-out cursor-pointer
             `}>
               <i className="fa-solid fa-users"></i>
