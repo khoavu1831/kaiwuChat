@@ -2,7 +2,7 @@ import React from 'react'
 
 function ChatHeader() {
   return (
-    <div className='flex items-center justify-between px-4 h-18 bg-basecolor border-l border-[#666880]/80'>
+    <div className='flex items-center justify-between px-4 h-18 bg-basecolor/90 border-[#666880]/80'>
       {/* left section */}
       <div className="left-section flex">
 

@@ -8,7 +8,7 @@ function ChatAppPage() {
 
   return (
     <div className="main-container bg-basecolor">
-      <div className="main-wrapper flex">
+      <div className="main-wrapper flex h-dvh">
 
         {/* sidebar section */}
         <Sidebar />

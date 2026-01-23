@@ -4,7 +4,7 @@ import ChatWindow from "./ChatWindow"
 
 function ChatLayout() {
   return (
-    <div className='flex flex-col justify-between bg-brandcolor/40 w-full max-md:hidden font-mono'>
+    <div className='flex flex-col justify-between bg-brandcolor/40 w-full max-md:hidden font-mono overflow-hidden'>
       <ChatHeader />
       <ChatWindow />
       <ChatInput />
