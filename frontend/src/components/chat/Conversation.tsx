@@ -19,7 +19,7 @@ function Conversation({ id }: { id: string }) {
         <div className="cover-avatar w-12 h-12">
           <img
             className="h-full w-full object-cover rounded-full"
-            src="avatar.jpg"
+            src="avatar-skeleton.jpeg"
             alt="avatar user"
           />
         </div>

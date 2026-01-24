@@ -21,7 +21,7 @@ function MessageItem({ isOwn, message } : Message) {
       >
         <img
           className='h-6 w-6 object-cover'
-          src="avatar.jpg"
+          src="avatar-skeleton.jpeg"
           alt="avatar-in-chat"
         />
       </div>

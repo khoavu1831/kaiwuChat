@@ -55,7 +55,7 @@ function ChatWindow() {
                 <div className="cover-avatar h-15 w-15 my-2 rounded-full overflow-hidden">
                   <img
                     className='h-full w-full'
-                    src="avatar.jpg"
+                    src="avatar-skeleton.jpeg"
                     alt="avatar"
                   />
                 </div>

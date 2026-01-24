@@ -1,10 +1,21 @@
 import Logo from "../logo/Logo"
 import { useUIStore } from "../../stores/useUIStore";
 import Conversation from "../chat/Conversation";
+import FriendSkeleton from "../skeleton/PrivateSkeleton";
+import { JSX } from "react";
+import GroupSkeleton from "../skeleton/GroupSkeleton";
+import PrivateSkeleton from "../skeleton/PrivateSkeleton";
 
 function Sidebar() {
   const { tab, setTab } = useUIStore();
-  const converList = [];
+  const converList: JSX.Element[] = [];
+  const privateList = tab === "private" ? converList : [];
+  const groupList = tab === "group" ? converList : [];
+
+  const isPrivate = tab === "private";
+  
+  const currentList = tab === "private" ? privateList : groupList;
+  const emptyList = currentList.length === 0;
   for (let index = 0; index < 15; index++) {
     converList.push(<Conversation key={index} id={String(index)} />);
   }
@@ -70,21 +81,15 @@ function Sidebar() {
         </div>
 
         {/* conversation list */}
-        {tab === "private" && (
-          <div className="conversation-container bg-brandcolor/10 rounded-t-2xl overflow-y-auto chat-scroll">
+        <div className="conversation-container bg-brandcolor/10 rounded-t-2xl overflow-y-auto chat-scroll">
+          {!emptyList ? (
+            isPrivate ? <PrivateSkeleton /> : <GroupSkeleton /> 
+          ) : (
             <div className="flex flex-col p-2">
-              {converList}
+              {currentList}
             </div>
-          </div>
-        )}
-
-        {tab === "group" && (
-          <div className="conversation-container bg-brandcolor/10 rounded-t-2xl overflow-y-auto chat-scroll">
-            <div className="flex flex-col p-2">
-              {converList}
-            </div>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </>
   )
