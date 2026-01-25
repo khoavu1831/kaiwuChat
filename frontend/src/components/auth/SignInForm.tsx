@@ -3,6 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form';
 import { useAuthStore } from '../../stores/useAuthStore';
 import { useNavigate } from 'react-router';
+import { useState } from 'react';
 import Logo from '../logo/Logo';
 
 function SignInForm() {
@@ -15,6 +16,7 @@ function SignInForm() {
 
   const { signIn } = useAuthStore();
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
 
   const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<SignInFormValues>({
@@ -24,11 +26,17 @@ function SignInForm() {
   const onSubmit = async (data: SignInFormValues) => {
     const { username, password } = data;
 
-    // goi api - signin
-    await signIn(username, password);
-    navigate('/');
+    try {
+      setError(null);
+      // goi api - signin
+      await signIn(username, password);
+      navigate('/');
+    } catch (err: any) {
+      // Hien thi loi
+      setError(err?.response?.data?.message || "Đăng nhập thất bại. Vui lòng kiểm tra lại");
+    }
   };
-  
+
   return (
     <div className="z-10 bg-basecolor lg:min-w-196 max-sm:h-full md:rounded-xl" >
 
@@ -56,6 +64,11 @@ function SignInForm() {
             className="flex flex-col gap-3"
             method="post"
           >
+            {error && (
+              <div className="bg-red-500/10 border border-red-500/50 rounded-md p-3 text-red-500 text-sm text-center">
+                {error}
+              </div>
+            )}
 
             {/* username field */}
             <div className="flex flex-col gap-1.5 md:min-w-100 text-white text-[14px]" >
@@ -95,7 +108,7 @@ function SignInForm() {
 
             {/* forgot password field */}
             <a href="/signup" className="text-brandcolor text-[12px] cursor-pointer" >
-              Quên mật khẩu? 
+              Quên mật khẩu?
             </a>
 
             {/* button sign in */}

@@ -7,7 +7,12 @@ export const getAcceptedFriendship = async (userId_A, userId_B) => {
   let userA = userId_A;
   let userB = userId_B;
 
-  if (userA > userB) [userA, userB] = [userB, userA];
+  // Đảm bảo userA luôn nhỏ hơn userB
+  if (userA > userB) {
+    const temp = userA;
+    userA = userB;
+    userB = temp;
+  }
 
   return prisma.friendship.findUnique({
     where: {

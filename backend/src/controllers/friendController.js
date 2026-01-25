@@ -3,8 +3,17 @@ import { getAcceptedFriendship } from '../utils/Helper/friendshipHelper.js';
 
 export const sendFriendRequest = async (req, res) => {
   try {
-    const { to } = req.body;
+    const { toUserId } = req.body;
     const from = req.user.id;
+
+    console.log('sendFriendRequest - from:', from, 'toUserId:', toUserId, 'types:', typeof from, typeof toUserId);
+
+    // Đảm bảo toUserId là number
+    const to = Number(toUserId);
+
+    if (isNaN(to)) {
+      return res.status(400).json({ message: "ID người dùng không hợp lệ" });
+    }
 
     // kiểm tra các trường hợp có thể gây lỗi
     // 1. gửi lời mời cho chính bản thân
@@ -23,21 +32,25 @@ export const sendFriendRequest = async (req, res) => {
     }
 
     // 3. kiểm tra 2 user có là bạn không
-    await getAcceptedFriendship(from, to);
+    const existed = await getAcceptedFriendship(from, to);
+
+    console.log('Friendship check result:', existed);
 
     if (existed) {
       return res.status(400).json({ message: "Lời mời đã tồn tại" });
     }
 
     // Nếu không lỗi => tạo lời mời
-    await prisma.friendship.create({
+    const friendship = await prisma.friendship.create({
       data: {
-        userId: userA,
-        friendId: userB,
+        userId: from < to ? from : to,
+        friendId: from < to ? to : from,
         senderId: from,
         status: "pending"
       }
     });
+
+    console.log('Created friendship:', friendship);
 
     return res.status(201).json({ message: "Gửi lời mời kết bạn thành công" });
 
@@ -145,7 +158,7 @@ export const getAllFriends = async (req, res) => {
 
     // danh sách bạn bè không chứa bản thân user
     const result = friends.map(f => {
-      f.userId === userId ? f.friend : f.user;
+      return f.userId === userId ? f.friend : f.user;
     })
 
     return res.status(201).json({
@@ -181,11 +194,20 @@ export const getFriendRequests = async (req, res) => {
       }
     });
 
-    const result = requests.map(r => r.sender);
+    // Map to return full request objects with sender data
+    const result = requests.map(r => ({
+      _id: r.id,
+      fromUserId: r.senderId,
+      toUserId: r.userId === userId ? r.userId : r.friendId,
+      status: r.status,
+      createdAt: r.createdAt,
+      updatedAt: r.updatedAt,
+      fromUser: r.sender
+    }));
 
     return res.status(200).json({
       message: "Lấy danh sách các yêu cầu kết bạn thành công",
-      requests: result
+      friendRequests: result
     });
 
   } catch (error) {

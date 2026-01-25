@@ -1,5 +1,6 @@
 export interface User {
-  _id: number;
+  id: number;
+  _id: number; // Deprecated, use id instead
   username: string;
   email: string;
   displayName: string;

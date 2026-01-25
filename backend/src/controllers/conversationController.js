@@ -107,19 +107,22 @@ export const getConversations = async (req, res) => {
 
     const result = conversations.map(c => {
       const me = c.participants.find(p => p.userId === userId);
-      const lastMesage = c.messages[0];
+      const lastMessage = c.messages[0];
 
       return {
         id: c.id,
         type: c.type,
         name: c.name,
-        lastMesage,
-        unreadCount: lastMesage && me?.lastSeenAt
-          ? lastMesage.createdAt > me.lastSeenAt ? 1 : 0
-          : lastMesage ? 1 : 0,
-        participants: c.participants
-          .filter(p => p.userId !== userId)
-          .map(p => p.user)
+        lastMessage,
+        unreadCount: lastMessage && me?.lastSeenAt
+          ? lastMessage.createdAt > me.lastSeenAt ? 1 : 0
+          : lastMessage ? 1 : 0,
+        participants: c.participants.map(p => ({
+          userId: p.userId,
+          user: p.user
+        })),
+        createdAt: c.createdAt,
+        updatedAt: c.updatedAt
       };
     });
 
