@@ -2,11 +2,13 @@ import { useEffect, useRef } from 'react';
 import MessageItem from './MessageItem';
 import { useMessageStore } from '../../stores/useMessageStore';
 import { useConversationStore } from '../../stores/useConversationStore';
+import { useAuthStore } from '../../stores/useAuthStore';
 
 function ChatWindow() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const { messages, loading, loadMessages, markAsSeen, clearMessages } = useMessageStore();
   const { selectedConversationId, conversations } = useConversationStore();
+  const { user } = useAuthStore();
 
   // Tự động scroll xuống tin nhắn mới nhất
   const scrollToBottom = () => {
@@ -54,7 +56,7 @@ function ChatWindow() {
               alt="avatar"
             />
           </div>
-          <span className='text-white text-lg font-semibold'>Chào mừng!</span>
+          <span className='text-white text-lg font-semibold'>{user?.displayName}</span>
           <span className='text-[#666880]'>Chọn một cuộc trò chuyện để bắt đầu</span>
         </div>
       </div>

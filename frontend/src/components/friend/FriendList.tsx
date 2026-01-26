@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useFriendStore } from '../../stores/useFriendStore';
 import { useConversationStore } from '../../stores/useConversationStore';
+import FriendSkeleton from '../skeleton/FriendSkeleton';
 
 function FriendList() {
   const { friends, loading, loadFriends } = useFriendStore();
@@ -28,10 +29,15 @@ function FriendList() {
 
   if (friends.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
-        <i className="fa-solid fa-user-group text-[#666880] text-4xl mb-3"></i>
-        <p className="text-[#666880] text-sm">Bạn chưa có bạn bè nào</p>
-        <p className="text-[#666880] text-xs mt-1">Hãy thêm bạn bè để bắt đầu trò chuyện!</p>
+      // <div className="flex flex-col items-center justify-center py-8 px-4 text-center">
+      //   <i className="fa-solid fa-user-group text-[#666880] text-4xl mb-3"></i>
+      //   <p className="text-[#666880] text-sm">Bạn chưa có bạn bè nào</p>
+      //   <p className="text-[#666880] text-xs mt-1">Hãy thêm bạn bè để bắt đầu trò chuyện!</p>
+      // </div>
+      <div className='flex justify-center w-full bg-basecolor h-full'>
+        <div className="">
+          <FriendSkeleton />
+        </div>
       </div>
     );
   }

@@ -38,7 +38,7 @@ function FriendRequestItem({ request }: FriendRequestItemProps) {
   if (!request) return null;
 
   return (
-    <div className="flex items-center gap-3 p-3 bg-basecolor/50 rounded-lg mb-2">
+    <div className="flex items-center gap-3 p-3 bg-basecolor rounded-2xl mb-2">
       <div className="cover-avatar w-12 h-12">
         <img
           className="h-full w-full object-cover rounded-full"
@@ -56,13 +56,13 @@ function FriendRequestItem({ request }: FriendRequestItemProps) {
         </p>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex flex-col gap-2">
         <button
           onClick={handleAccept}
           disabled={processing}
           className="
             px-4 py-2 rounded-lg
-            bg-brandcolor text-white text-sm font-medium
+            bg-brandcolor text-white text-[10px] font-medium
             hover:bg-brandcolor/80 transition-colors
             disabled:opacity-50 disabled:cursor-not-allowed
           "
@@ -78,7 +78,7 @@ function FriendRequestItem({ request }: FriendRequestItemProps) {
           disabled={processing}
           className="
             px-4 py-2 rounded-lg
-            bg-[#2c2e42] text-white text-sm
+            bg-[#2c2e42] text-white text-[10px]
             hover:bg-[#3c3e52] transition-colors
             disabled:opacity-50 disabled:cursor-not-allowed
           "

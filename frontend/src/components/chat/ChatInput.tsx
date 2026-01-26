@@ -29,7 +29,13 @@ function ChatInput() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className='flex items-center px-4 h-18 bg-basecolor'>
+    <form
+      onSubmit={handleSubmit}
+      className={`
+        flex items-center px-4 h-18 bg-basecolor
+        ${!selectedConversationId && 'hidden'}
+      `}
+    >
       {/* left section */}
       <div className="flex gap-2 justify-between text-white text-xl">
         <i className="fa-solid fa-bars-staggered cursor-pointer hover:text-brandcolor duration-300"></i>

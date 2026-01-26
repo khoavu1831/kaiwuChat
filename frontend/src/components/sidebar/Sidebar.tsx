@@ -39,7 +39,7 @@ function Sidebar() {
 
   return (
     <>
-      <div className="flex flex-col h-dvh font-mono md:max-w-3/10 max-md:w-full">
+      <div className="flex flex-col h-dvh font-mono md:w-4/10 lg:w-3/10 max-md:w-full">
 
         {/* logo */}
         <div className="w-full flex items-center pl-2 py-4">
@@ -62,8 +62,9 @@ function Sidebar() {
         </div>
 
         {/* tabs */}
-        <div className="tabs flex justify-between items-center px-2 pt-4 text-white">
+        <div className="tabs flex justify-between items-center px-2 pt-4 text-white h-12">
           <div className="tabs-nav flex items-center">
+
             {/* private chat tab */}
             <button
               onClick={() => setTab("private")}
@@ -73,11 +74,11 @@ function Sidebar() {
               transition-all duration-600 ease-in-out cursor-pointer
             `}>
               <i className="fa-solid fa-user"></i>
-              {privateConversations.length > 0 && (
+              {/* {privateConversations.length > 0 && (
                 <span className="ml-2 text-xs bg-brandcolor/60 px-2 py-0.5 rounded-full">
                   {privateConversations.length}
                 </span>
-              )}
+              )} */}
             </button>
 
             {/* group chat tab */}
@@ -89,11 +90,11 @@ function Sidebar() {
               transition-all duration-600 ease-in-out cursor-pointer
             `}>
               <i className="fa-solid fa-users"></i>
-              {groupConversations.length > 0 && (
+              {/* {groupConversations.length > 0 && (
                 <span className="ml-2 text-xs bg-brandcolor/60 px-2 py-0.5 rounded-full">
                   {groupConversations.length}
                 </span>
-              )}
+              )} */}
             </button>
 
             {/* friend tab */}
@@ -114,9 +115,27 @@ function Sidebar() {
           </div>
 
           {/* Action buttons */}
-          <div className="flex gap-2">
+          <div className="flex items-center justify-center gap-2 relative h-full">
+
+            {/* Start private chat button */}
+            <div className={`
+              absolute inset-y-0 right-0
+              flex items-center
+              transition-all duration-600 ease-in-out
+              ${tab === "private"
+                ? "opacity-100 translate-x-0 cursor-pointer"
+                : "opacity-0 translate-x-2 pointer-events-none"}
+              `}>
+              <i
+                onClick={() => setShowCreatePrivateChatModal(true)}
+                className="fa-solid fa-comment-medical hover:text-brandcolor transition-all duration-500"
+              ></i>
+            </div>
+
             {/* Create group button */}
             <div className={`
+              absolute inset-y-0 right-0
+              flex items-center
               transition-all duration-600 ease-in-out
               ${tab === "group"
                 ? "opacity-100 translate-x-0 cursor-pointer"
@@ -130,6 +149,8 @@ function Sidebar() {
 
             {/* Add friend button */}
             <div className={`
+              absolute inset-y-0 right-0
+              flex items-center
               transition-all duration-600 ease-in-out
               ${tab === "friend"
                 ? "opacity-100 translate-x-0 cursor-pointer"
@@ -140,88 +161,69 @@ function Sidebar() {
                 className="fa-solid fa-user-plus hover:text-brandcolor transition-all duration-500"
               ></i>
             </div>
-
-            {/* Start private chat button */}
-            <div className={`
-              transition-all duration-600 ease-in-out
-              ${tab === "private"
-                ? "opacity-100 translate-x-0 cursor-pointer"
-                : "opacity-0 translate-x-2 pointer-events-none"}
-              `}>
-              <i
-                onClick={() => setShowCreatePrivateChatModal(true)}
-                className="fa-solid fa-comment-medical hover:text-brandcolor transition-all duration-500"
-              ></i>
-            </div>
           </div>
         </div>
 
-        {/* conversation/friend list */}
-        <div className="conversation-container bg-brandcolor/10 rounded-t-2xl overflow-y-auto chat-scroll flex-1">
-          {tab === "friend" ? (
-            // Friend tab content
+        {/* conversations */}
+        <div className="conversation-container bg-brandcolor/10 rounded-t-2xl overflow-y-auto chat-scroll flex-1 relative">
+
+          {/* conversations: private + group*/}
+          <div
+            className={`
+              absolute inset-0
+              transition-all duration-300
+              ${tab === "friend"
+                ? "opacity-0 pointer-events-none"
+                : "opacity-100"}
+            `}
+          >
+            {tab !== "friend" && (
+              loading ? (
+                tab === "private" ? <PrivateSkeleton /> : <GroupSkeleton />
+              ) : (currentList.length === 0 ? (
+                <div className="flex flex-col items-center h-full bg-basecolor">
+                  {tab === "private" ? <PrivateSkeleton /> : <GroupSkeleton />}
+                </div>
+              ) : (
+                <div className="flex flex-col p-2">
+                  {currentList.map(c => (
+                    <Conversation key={c.id} conversation={c} />
+                  ))}
+                </div>
+              ))
+            )}
+          </div>
+
+          {/* friend list */}
+          <div
+            className={`
+              absolute inset-0
+              transition-all duration-300
+              ${tab === "friend"
+                ? "opacity-100"
+                : "opacity-0 pointer-events-none"}
+            `}
+          >
             <div className="flex flex-col h-full">
-              {/* Friend requests toggle */}
               {pendingRequestsCount > 0 && (
                 <div className="p-2">
                   <button
                     onClick={() => setShowFriendRequests(!showFriendRequests)}
-                    className="w-full flex items-center justify-between p-3 bg-brandcolor/20 rounded-lg hover:bg-brandcolor/30 transition-colors"
+                    className="w-full flex items-center justify-between p-3 bg-brandcolor/20 rounded-lg"
                   >
-                    <span className="text-white font-medium">
+                    <span className="text-white">
                       Lời mời kết bạn ({pendingRequestsCount})
                     </span>
-                    <i className={`fa-solid fa-chevron-${showFriendRequests ? 'up' : 'down'} text-white`}></i>
+                    <i className={`fa-solid fa-chevron-${showFriendRequests ? "up" : "down"}`} />
                   </button>
                 </div>
               )}
 
-              {/* Show friend requests or friend list */}
-              {showFriendRequests ? (
-                <FriendRequestList />
-              ) : (
-                <FriendList />
-              )}
+              {showFriendRequests ? <FriendRequestList /> : <FriendList />}
             </div>
-          ) : (
-            // Conversation tabs content
-            <>
-              {loading ? (
-                // Loading skeleton
-                tab === "private" ? <PrivateSkeleton /> : <GroupSkeleton />
-              ) : currentList.length === 0 ? (
-                // Empty state
-                <div className="flex flex-col items-center justify-center h-full p-4 text-center">
-                  <i className={`
-                    fa-solid ${tab === "private" ? "fa-user" : "fa-users"}
-                    text-[#666880] text-4xl mb-3
-                  `}></i>
-                  <p className="text-[#666880] text-sm">
-                    {tab === "private" && "Chưa có cuộc trò chuyện nào"}
-                    {tab === "group" && "Chưa có nhóm nào"}
-                  </p>
-                  <button
-                    onClick={() => {
-                      if (tab === "private") setShowCreatePrivateChatModal(true);
-                      else setShowCreateGroupModal(true);
-                    }}
-                    className="mt-4 px-4 py-2 bg-brandcolor text-white rounded-lg hover:bg-brandcolor/80 transition-colors"
-                  >
-                    <i className={`fa-solid fa-plus mr-2`}></i>
-                    {tab === "private" ? "Bắt đầu trò chuyện" : "Tạo nhóm mới"}
-                  </button>
-                </div>
-              ) : (
-                // Conversation list
-                <div className="flex flex-col p-2">
-                  {currentList.map((conversation) => (
-                    <Conversation key={conversation.id} conversation={conversation} />
-                  ))}
-                </div>
-              )}
-            </>
-          )}
+          </div>
         </div>
+
       </div>
 
       {/* Modals */}

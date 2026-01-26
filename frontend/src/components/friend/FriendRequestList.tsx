@@ -28,9 +28,9 @@ function FriendRequestList() {
 
   return (
     <div className="flex flex-col p-2">
-      <h3 className="text-white font-medium mb-3 px-2">
+      {/* <h3 className="text-white font-medium mb-3 px-2">
         Lời mời kết bạn ({friendRequests.length})
-      </h3>
+      </h3> */}
       {friendRequests.map((request) => (
         <FriendRequestItem key={request._id} request={request} />
       ))}

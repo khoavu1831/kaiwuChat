@@ -1,11 +1,10 @@
 -- CreateTable
 CREATE TABLE `User` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,
     `hashPassword` VARCHAR(191) NOT NULL,
-    `firstName` VARCHAR(191) NULL,
-    `lastName` VARCHAR(191) NULL,
+    `displayName` VARCHAR(191) NULL,
     `avatarUrl` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
@@ -17,9 +16,10 @@ CREATE TABLE `User` (
 
 -- CreateTable
 CREATE TABLE `Friendship` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `userId` BIGINT NOT NULL,
-    `friendId` BIGINT NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `userId` INTEGER NOT NULL,
+    `friendId` INTEGER NOT NULL,
+    `senderId` INTEGER NOT NULL,
     `status` VARCHAR(191) NOT NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
@@ -29,7 +29,7 @@ CREATE TABLE `Friendship` (
 
 -- CreateTable
 CREATE TABLE `Conversation` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
     `type` VARCHAR(191) NOT NULL,
     `name` VARCHAR(191) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -40,10 +40,11 @@ CREATE TABLE `Conversation` (
 
 -- CreateTable
 CREATE TABLE `Participant` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `conversationId` BIGINT NOT NULL,
-    `userId` BIGINT NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `conversationId` INTEGER NOT NULL,
+    `userId` INTEGER NOT NULL,
     `role` VARCHAR(191) NOT NULL DEFAULT 'member',
+    `lastSeenAt` DATETIME(3) NULL,
     `joinAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
 
     UNIQUE INDEX `Participant_conversationId_userId_key`(`conversationId`, `userId`),
@@ -52,9 +53,9 @@ CREATE TABLE `Participant` (
 
 -- CreateTable
 CREATE TABLE `Message` (
-    `id` BIGINT NOT NULL AUTO_INCREMENT,
-    `conversationId` BIGINT NOT NULL,
-    `senderId` BIGINT NOT NULL,
+    `id` INTEGER NOT NULL AUTO_INCREMENT,
+    `conversationId` INTEGER NOT NULL,
+    `senderId` INTEGER NOT NULL,
     `content` VARCHAR(191) NOT NULL,
     `type` VARCHAR(191) NOT NULL DEFAULT 'text',
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
@@ -63,11 +64,29 @@ CREATE TABLE `Message` (
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
+-- CreateTable
+CREATE TABLE `Session` (
+    `id` VARCHAR(191) NOT NULL,
+    `userId` INTEGER NOT NULL,
+    `refreshToken` VARCHAR(512) NOT NULL,
+    `expiresAt` DATETIME(3) NOT NULL,
+    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
+    `updatedAt` DATETIME(3) NOT NULL,
+
+    UNIQUE INDEX `Session_refreshToken_key`(`refreshToken`),
+    INDEX `Session_userId_idx`(`userId`),
+    INDEX `Session_refreshToken_idx`(`refreshToken`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
 -- AddForeignKey
 ALTER TABLE `Friendship` ADD CONSTRAINT `Friendship_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Friendship` ADD CONSTRAINT `Friendship_friendId_fkey` FOREIGN KEY (`friendId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Friendship` ADD CONSTRAINT `Friendship_senderId_fkey` FOREIGN KEY (`senderId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Participant` ADD CONSTRAINT `Participant_conversationId_fkey` FOREIGN KEY (`conversationId`) REFERENCES `Conversation`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -80,3 +99,6 @@ ALTER TABLE `Message` ADD CONSTRAINT `Message_conversationId_fkey` FOREIGN KEY (
 
 -- AddForeignKey
 ALTER TABLE `Message` ADD CONSTRAINT `Message_senderId_fkey` FOREIGN KEY (`senderId`) REFERENCES `User`(`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE `Session` ADD CONSTRAINT `Session_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
