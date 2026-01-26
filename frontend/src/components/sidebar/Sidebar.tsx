@@ -39,7 +39,7 @@ function Sidebar() {
 
   return (
     <>
-      <div className="flex flex-col h-dvh font-mono md:w-4/10 lg:w-3/10 max-md:w-full">
+      <div className="flex flex-col h-dvh font-mono md:w-5/10 lg:w-4/10 xl:w-3/10 max-md:w-full">
 
         {/* logo */}
         <div className="w-full flex items-center pl-2 py-4">
@@ -52,7 +52,8 @@ function Sidebar() {
             <i className="fa-solid fa-magnifying-glass text-[#666880] group-focus-within:text-white transition-colors duration-400 py-0 px-3"></i>
             <input
               className="
-                placeholder:text-[# ] placeholder:text-[12px]
+                placeholder:text-[# ] lg:placeholder:text-[12px]
+                md:placeholder:text-[11px]
                 focus:outline-none text-white text-sm
                 py-3 px-3 w-full caret-white bg-transparent
               "

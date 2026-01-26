@@ -87,7 +87,7 @@ function ChatWindow() {
   // Hiển thị danh sách tin nhắn
   return (
     <div className='flex-1 overflow-y-auto p-4 chat-scroll'>
-      <div className='flex flex-col gap-3'>
+      <div className='flex flex-col gap-1'>
         {messages.map((message) => (
           <MessageItem key={message.id} message={message} />
         ))}

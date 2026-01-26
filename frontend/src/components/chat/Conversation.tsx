@@ -56,8 +56,14 @@ function Conversation({ conversation }: ConversationProps) {
             alt="avatar user"
           />
           {conversation.type === 'group' && (
-            <div className="absolute -bottom-1 -right-1 bg-brandcolor rounded-full p-1">
-              <i className="fa-solid fa-users text-white text-[8px]"></i>
+            <div
+              className="
+                absolute -bottom-1 -right-1 w-4 h-4
+                bg-brandcolor rounded-full p-3
+                flex items-center justify-center
+             "
+            >
+              <i className="fa-solid fa-users text-white text-[9px]"></i>
             </div>
           )}
         </div>
@@ -73,7 +79,7 @@ function Conversation({ conversation }: ConversationProps) {
           </div>
 
           {/* time sent message */}
-          <div className="time-sent text-[#666880] text-[11px] ml-2 flex-shrink-0">
+          <div className="time-sent text-[#666880] text-[11px] ml-2 shrink-0">
             <span>{formatTime(lastMessageTime)}</span>
           </div>
         </div>
@@ -90,7 +96,7 @@ function Conversation({ conversation }: ConversationProps) {
             <span className={`
               ${active ? "hidden" : "bg-brandcolor"}
               flex items-center text-center justify-center text-white font-bold 
-              h-5 min-w-[20px] px-1 rounded-full text-[11px] shrink-0
+              h-5 min-w-5 px-1 rounded-full text-[11px] shrink-0
             `}>
               {conversation.unreadCount > 99 ? '99+' : conversation.unreadCount}
             </span>

@@ -50,8 +50,13 @@ function ChatHeader() {
             alt="avatar user"
           />
           {currentConversation.type === 'group' && (
-            <div className="absolute -bottom-1 -right-1 bg-brandcolor rounded-full p-1">
-              <i className="fa-solid fa-users text-white text-[8px]"></i>
+            <div
+              className="
+                absolute -bottom-1 -right-1 bg-brandcolor rounded-full p-3
+                h-4 w-4 flex items-center justify-center
+              "
+            >
+              <i className="fa-solid fa-users text-white text-[9px]"></i>
             </div>
           )}
         </div>
