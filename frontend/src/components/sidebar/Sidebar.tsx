@@ -10,7 +10,8 @@ import FriendList from "../friend/FriendList";
 import FriendRequestList from "../friend/FriendRequestList";
 import CreateGroupModal from "../modals/CreateGroupModal";
 import CreatePrivateChatModal from "../modals/CreatePrivateChatModal";
-import AddFriendModal from "../friend/AddFriendModal";
+import AddFriendModal from "../modals/AddFriendModal";
+import Logout from "../auth/Logout";
 
 function Sidebar() {
   const { tab, setTab } = useUIStore();
@@ -225,18 +226,55 @@ function Sidebar() {
           </div>
         </div>
 
+        {/* footer sidebar */}
+        <div className="footer-sidebar flex justify-between bg-basecolor w-full h-18">
+
+          {/* profile section*/}
+          <div
+            className="
+              flex items-center gap-3 p-3 rounded-lg
+              hover:bg-brandcolor/20 cursor-pointer
+              transition-colors duration-200
+            "
+          >
+            <div className="cover-avatar w-12 h-12 relative">
+              <img
+                className="h-full w-full object-cover rounded-full"
+                src={"avatar-skeleton.jpeg"}
+              />
+              {/* Online indicator - TODO: implement real online status */}
+              <div className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full border-2 border-basecolor"></div>
+            </div>
+
+            <div className="flex-1 min-w-0">
+              <h3 className="text-white font-medium truncate">
+                {'Unknown User'}
+              </h3>
+              <p className="text-[#666880] text-sm truncate">
+                {'unknown'}
+              </p>
+            </div>
+
+            <i className="fa-solid fa-comment text-brandcolor opacity-0 group-hover:opacity-100 transition-opacity"></i>
+          </div>
+
+          {/* logout button */}
+          <Logout />
+        </div>
       </div>
 
+
       {/* Modals */}
-      <CreateGroupModal
+      < CreateGroupModal
         isOpen={showCreateGroupModal}
-        onClose={() => setShowCreateGroupModal(false)}
+        onClose={() => setShowCreateGroupModal(false)
+        }
       />
-      <CreatePrivateChatModal
+      < CreatePrivateChatModal
         isOpen={showCreatePrivateChatModal}
         onClose={() => setShowCreatePrivateChatModal(false)}
       />
-      <AddFriendModal
+      < AddFriendModal
         isOpen={showAddFriendModal}
         onClose={() => setShowAddFriendModal(false)}
       />

@@ -10,13 +10,14 @@ function ChatHeader() {
 
   if (!currentConversation) {
     return (
-      <div className='flex items-center justify-between px-4 h-18 bg-basecolor/90 border-[#666880]/80'>
-        <div className="left-section flex">
-          <div className="flex flex-col">
-            <h2 className='text-white'>Chọn một cuộc trò chuyện</h2>
-          </div>
-        </div>
-      </div>
+      // <div className='flex items-center justify-between px-4 h-18 bg-basecolor/90 border-[#666880]/80'>
+      //   <div className="left-section flex">
+      //     <div className="flex flex-col">
+      //       <h2 className='text-white'>Chọn một cuộc trò chuyện</h2>
+      //     </div>
+      //   </div>
+      // </div>
+      <></>
     );
   }
 
